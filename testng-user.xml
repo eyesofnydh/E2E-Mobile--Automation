@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!--
+  USER-app regression suite: generic smoke + user-specific login navigation.
+  These tests target the user app UI, so run with targetApp=user (the default).
+    mvn test -DsuiteXmlFile=testng-user.xml
+-->
+<suite name="Scoot User Suite" verbose="1">
+
+    <listeners>
+        <listener class-name="com.scoot.automation.utils.TestListener"/>
+    </listeners>
+
+    <test name="User - Smoke and Login">
+        <classes>
+            <class name="com.scoot.automation.tests.SmokeTest"/>
+            <class name="com.scoot.automation.tests.user.UserLoginNavigationTest"/>
+        </classes>
+    </test>
+
+</suite>

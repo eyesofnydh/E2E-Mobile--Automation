@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!--
+  USER-app logged-in home + booking-entry suite.
+  Requires the staging account to be signed in (login persists via noReset).
+  If the session was cleared, run testng-login.xml first.
+    mvn test -DsuiteXmlFile=testng-home.xml
+-->
+<suite name="Scoot User Home Suite" verbose="1">
+
+    <listeners>
+        <listener class-name="com.scoot.automation.utils.TestListener"/>
+    </listeners>
+
+    <test name="User - Home and Booking Entry">
+        <classes>
+            <class name="com.scoot.automation.tests.user.UserHomeBookingEntryTest"/>
+            <class name="com.scoot.automation.tests.user.UserFareEstimateTest"/>
+            <class name="com.scoot.automation.tests.user.UserScheduleRideTest"/>
+        </classes>
+    </test>
+
+</suite>

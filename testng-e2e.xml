@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!--
+  FULL CROSS-APP RIDE E2E (user books -> driver accepts -> trip -> both rate).
+  Drives TWO phones in ONE test: user app on one, driver app on the other.
+
+  OPT-IN: this places a REAL staging ride on the test card, so it is skipped
+  unless you pass -De2e.book=true. Both phones must be co-located (so dispatch
+  matches) and the driver must be able to go Online with a live GPS fix.
+
+    mvn test -DsuiteXmlFile=testng-e2e.xml -De2e.book=true ^
+      "-De2e.user.udid=192.168.3.28:5555"  -De2e.user.platformVersion=12 ^
+      "-De2e.driver.udid=138635215600189"  -De2e.driver.platformVersion=14
+
+  Credentials come from config.local.properties (user.testPhone/testPassword,
+  driver.testPhone/testPassword). Without -De2e.book=true the test is skipped.
+-->
+<suite name="Scoot Cross-App Ride E2E" verbose="1">
+
+    <listeners>
+        <listener class-name="com.scoot.automation.utils.TestListener"/>
+    </listeners>
+
+    <test name="E2E - User books, driver accepts, full trip">
+        <classes>
+            <class name="com.scoot.automation.tests.e2e.CrossAppRideE2ETest"/>
+        </classes>
+    </test>
+
+</suite>

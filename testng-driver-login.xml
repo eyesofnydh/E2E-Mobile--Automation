@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!--
+  DRIVER app real-login suite. Run from a LOGGED-OUT state (a successful login
+  persists via noReset, so re-running from a logged-in state lands straight on
+  the driver home and skips the sign-in screen).
+    mvn test -DsuiteXmlFile=testng-driver-login.xml -DtargetApp=driver
+-->
+<suite name="Scoot Driver Login Suite" verbose="1">
+
+    <listeners>
+        <listener class-name="com.scoot.automation.utils.TestListener"/>
+    </listeners>
+
+    <test name="Driver - Login">
+        <classes>
+            <class name="com.scoot.automation.tests.driver.DriverLoginTest"/>
+        </classes>
+    </test>
+
+</suite>

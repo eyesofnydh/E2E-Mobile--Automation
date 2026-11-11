@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!--
+  USER-app real login suite. Authenticates with the staging test account from
+  config.properties. Kept separate because a successful login leaves the app
+  signed in (noReset), which changes the starting screen for the logged-out
+  navigation tests in testng-user.xml.
+    mvn test -DsuiteXmlFile=testng-login.xml
+-->
+<suite name="Scoot User Login Suite" verbose="1">
+
+    <listeners>
+        <listener class-name="com.scoot.automation.utils.TestListener"/>
+    </listeners>
+
+    <test name="User - Login">
+        <classes>
+            <class name="com.scoot.automation.tests.user.UserLoginTest"/>
+        </classes>
+    </test>
+
+</suite>

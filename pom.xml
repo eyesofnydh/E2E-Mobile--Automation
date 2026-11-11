@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.scoot</groupId>
+    <artifactId>scoot-mobile-automation</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+    <name>Scoot Mobile Automation</name>
+    <description>Appium + TestNG + Page Object Model automation for the Scoot User and Driver Android apps</description>
+
+    <properties>
+        <!-- Compile to Java 17 (minimum you asked for) even though JDK 25 is installed -->
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Dependency versions pinned in one place -->
+        <appium.java-client.version>9.3.0</appium.java-client.version>
+        <!-- Pin Selenium to the version java-client 9.3.0 was built against.
+             Its pom uses an open range [4.19.0, 5.0); left unpinned, Maven grabs
+             the newest 4.x (4.52.0) which removed ContextAware / html5.LocationContext
+             that AndroidDriver still references -> compile failure. -->
+        <selenium.version>4.19.0</selenium.version>
+        <testng.version>7.10.2</testng.version>
+        <extentreports.version>5.1.2</extentreports.version>
+        <allure.version>2.29.0</allure.version>
+        <log4j.version>2.23.1</log4j.version>
+        <poi.version>5.3.0</poi.version>
+
+        <!-- Plugin versions -->
+        <surefire.version>3.5.0</surefire.version>
+        <compiler.plugin.version>3.13.0</compiler.plugin.version>
+
+        <!-- TestNG suite to run; override with -DsuiteXmlFile=... -->
+        <suiteXmlFile>testng.xml</suiteXmlFile>
+    </properties>
+
+    <!-- Force every transitive Selenium artifact to the pinned, compatible version -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-bom</artifactId>
+                <version>${selenium.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- Appium Java client: pulls in Selenium 4 transitively.
+             This is the mobile equivalent of selenium-java; AndroidDriver extends Selenium's RemoteWebDriver. -->
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>${appium.java-client.version}</version>
+        </dependency>
+
+        <!-- TestNG: same framework you know from Selenium projects -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+        </dependency>
+
+        <!-- ExtentReports: self-contained HTML report -->
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>${extentreports.version}</version>
+        </dependency>
+
+        <!-- Allure for TestNG: auto-registers a listener via ServiceLoader (no testng.xml entry needed) -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId>
+            <version>${allure.version}</version>
+        </dependency>
+
+        <!-- Logging: Log4j2 API + core, plus the SLF4J bridge so any SLF4J calls route to Log4j2 -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j2-impl</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
+        <!-- Apache POI: writes the Excel (.xlsx) bug sheet -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugin.version}</version>
+            </plugin>
+
+            <!-- Surefire runs the TestNG suite file (testng.xml) on `mvn test` -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.version}</version>
+                <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
+                    </suiteXmlFiles>
+                    <!-- Allure writes raw results here; the Allure CLI turns them into HTML later -->
+                    <systemPropertyVariables>
+                        <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

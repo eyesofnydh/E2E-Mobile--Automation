@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!--
+  USER-app account area: navigation drawer + ride history (read-only).
+  Requires the staging account to be signed in.
+    mvn test -DsuiteXmlFile=testng-account.xml
+-->
+<suite name="Scoot User Account Suite" verbose="1">
+
+    <listeners>
+        <listener class-name="com.scoot.automation.utils.TestListener"/>
+    </listeners>
+
+    <test name="User - Menu and History">
+        <classes>
+            <class name="com.scoot.automation.tests.user.UserMenuHistoryTest"/>
+            <class name="com.scoot.automation.tests.user.UserAccountTest"/>
+        </classes>
+    </test>
+
+</suite>
